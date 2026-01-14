@@ -1,0 +1,171 @@
+Cybersecurity Internship Progress Report
+Company: Developershub
+Intern Name: Muhammad Yasir Sajjad
+Internship Role: Cybersecurity Intern
+Project: Strengthening Security Measures for a Web Application
+Internship ID: DHC-750
+
+1. Introduction:
+The purpose of this report is to perform a basic security assessment of a web-based User Management System. The assessment focuses on identifying common web application vulnerabilities such as SQL Injection, Cross-Site Scripting (XSS), weak password storage, and security misconfigurations.
+This activity is conducted as part of Week 1 tasks for the Cybersecurity Internship to gain hands-on experience with vulnerability assessment tools and manual testing techniques.
+2. Application Overview:
+A mock web-based application was used for testing purposes. The application includes basic user functionalities such as user registration, login, and profile management.
+The application was deployed locally using Node.js and accessed through http://localhost:3000.
+3. Tools Used:
+•	Browser Developer Tools (Inspect Element)
+•	Manual Input Testing
+•	OWASP ZAP (Automated Vulnerability Scanner)
+•	Test Payloads for SQL Injection and XSS
+4. Vulnerability Assessment & Findings
+4.1 SQL Injection:
+Test Method:
+SQL injection payloads were entered into the email and password fields during login.
+Example payload: ' OR '1'='1
+Result:
+The application allowed login without valid credentials, indicating a successful SQL Injection vulnerability.
+Impact:
+Attackers can bypass authentication and gain unauthorized access.
+Severity: High
+Evidence: Screenshot of successful login using SQL injection payload.
+ 
+4.2 Cross-Site Scripting (XSS)
+Test Method:
+The following script was entered into input fields: <script>alert('XSS')</script>
+Result:
+The payload did not execute, indicating that the application is protected against basic reflected XSS attacks.
+
+Severity: Not Applicable
+Evidence:
+ 
+4.3 Weak Password Storage
+Test Method:
+Password behavior was analyzed by observing login functionality and application responses.
+
+Observation:
+Passwords are not visibly hashed or encrypted at the frontend level.
+
+Impact:
+If passwords are stored in plain text or weak hashing formats, it may lead to credential compromise.
+Severity: Medium
+Evidence:
+ 
+4.4 Security Misconfiguration
+Test 1: Default Credentials
+Attempted login using common default credentials.
+Result: Login failed.
+Conclusion: No default credential vulnerability found.
+
+Test 2: Error Message Disclosure
+Invalid inputs were entered to trigger errors.
+Generic error messages were displayed.
+
+Test 3: Missing Security Headers
+Security headers such as Content-Security-Policy, X-Frame-Options, and HSTS were missing.
+
+Test 4: HTTP Usage
+The application runs over HTTP instead of HTTPS.
+
+Test 5: Cookie Security Flags
+Session cookies were missing HttpOnly and Secure flags.
+
+Impact:
+Missing headers and insecure cookies may expose the application to session hijacking, XSS, and CSRF attacks.
+
+Severity: Medium
+5. Summary of Findings:
+•	SQL Injection vulnerability was successfully identified.
+•	No default credential issue was found.
+•	Security headers were missing.
+•	Cookies lacked essential security flags.
+•	Application uses HTTP instead of HTTPS.
+6. Recommendations:
+•	Implement parameterized queries to prevent SQL Injection.
+•	Use strong hashing algorithms such as bcrypt for password storage.
+•	Enable HTTPS for secure communication.
+•	Add security headers (CSP, HSTS, X-Frame-Options).
+•	Secure cookies using HttpOnly, Secure, and SameSite attributes.
+7. Conclusion:
+The security assessment revealed multiple vulnerabilities that could be exploited by attackers. Addressing these issues will significantly improve the overall security posture of the application. This assessment provided practical exposure to real-world web application security testing.
+                                                     Week 2
+1. Introduction
+This report presents the security measures implemented during Week 2 of the cybersecurity internship. The objective of this phase was to mitigate vulnerabilities identified during the Week 1 security assessment. The OWASP Juice Shop application was used as the testing environment. Since the application is intentionally vulnerable, the implemented fixes are demonstrated for learning and training purposes.
+2. Tools and Technologies Used
+•	Node.js and Express
+•	OWASP Juice Shop
+•	Validator Library (Input Validation)
+•	Bcrypt (Password Hashing)
+•	JSON Web Token (JWT)
+•	Helmet.js (Security Headers)
+•	OWASP ZAP (Re-testing)
+3. Security Measures Implemented
+3.1 Input Validation and Sanitization
+Input validation was implemented using the validator library. Email addresses are now validated before processing authentication requests. Invalid inputs are rejected at an early stage, reducing the risk of SQL Injection and malformed input attacks.
+Evidence:
+ 
+3.2 Secure Password Handling
+Password security was enhanced by demonstrating password hashing using the bcrypt library. Hashing ensures that user credentials are not handled or stored in plain text, which protects sensitive data even in the event of a database compromise.
+Evidence:
+ 
+3.3 JWT-Based Authentication
+Token-based authentication was implemented using JSON Web Tokens (JWT). Upon successful login, a signed JWT token is generated and returned in the server response. This improves authentication security and enables controlled access to protected resources.
+Evidence:
+ 
+3.4 HTTP Security Headers
+Helmet.js middleware was enabled to strengthen HTTP security headers. Important headers such as Content-Security-Policy, X-Frame-Options, and X-Content-Type-Options were added automatically, helping to protect the application from common web-based attacks.
+4. Testing and Verification
+The implemented security measures were tested using manual techniques and OWASP ZAP:
+•	Invalid email inputs were rejected successfully
+•	SQL Injection attempts used in Week 1 were blocked
+•	JWT token generation was verified via browser developer tools
+•	Security headers were confirmed in HTTP response headers
+•	OWASP ZAP re-scan showed reduced vulnerability severity
+5. Results and Observations
+The security posture of the application improved significantly after implementing the fixes. Compared to Week 1, several high-risk issues were mitigated. Authentication handling, input validation, and security configurations are now stronger and follow secure development practices.
+6. Conclusion
+Week 2 focused on mitigating vulnerabilities identified during the initial assessment. By implementing input validation, secure password handling, JWT-based authentication, and HTTP security headers, the application security was improved. These implementations provided practical experience in applying real-world web security controls.
+                                             Week 3
+1. Introduction
+This report documents the advanced security tasks performed in Week 3 of the cybersecurity internship. The objective was to conduct basic penetration testing, implement application logging, create a security checklist, and prepare final submission materials to demonstrate secure web application practices.
+2. Tools and Technologies Used
+•	Node.js and Express
+•	OWASP Juice Shop
+•	Nmap (Basic Penetration Testing)
+•	Winston (Logging Library)
+•	Browser Developer Tools
+•	GitHub (Final Submission)
+•	OBS Studio (Screen Recording)
+3. Basic Penetration Testing
+•	Nmap was used to scan the localhost server and identify open ports and running services.
+•	Browser-based testing was conducted to verify basic XSS and input vulnerabilities.
+•	Evidence was collected via screenshots to document the security status.
+Results: Open ports were identified, and no critical vulnerabilities were exploited during testing.
+4. Logging Implementation
+•	The Winston library was installed and configured for logging.
+•	logger.ts file was created, and logging was implemented for server events.
+•	Example log entry: info: Application started successfully
+•	Log file security.log was generated and verified.
+Outcome: Logging successfully records application activity, enabling monitoring and forensic analysis.
+5. Security Checklist
+A simple security checklist was created to ensure best practices were followed:
+•	Validate all user inputs.
+•	Hash and salt passwords using bcrypt.
+•	Enable JWT authentication.
+•	Use HTTPS for secure data transmission.
+•	Enable HTTP security headers using Helmet.js.
+•	Implement application logging with Winston.
+•	Conduct vulnerability testing with Nmap and OWASP ZAP.
+6. Final Submission Preparation
+•	Screen recording of the application, login flow, JWT verification, logging, and Nmap scan was recorded using OBS Studio.
+•	GitHub repository was prepared containing:
+o	logger.ts file
+o	security.log
+o	SECURITY_CHECKLIST.md
+o	README.md documenting Week 3 tasks
+Video and repository serve as evidence of practical implementation.
+7. Results and Observations
+•	Logging was successfully implemented and verified.
+•	Security checklist ensures that all critical security measures are applied.
+•	Basic penetration testing identified system exposure but no high-risk vulnerabilities were exploited.
+•	Application security posture is significantly improved compared to Week 1 and 2.
+8. Conclusion
+Week 3 focused on advanced security implementation, including basic penetration testing, logging, and security documentation. The tasks provide practical experience in monitoring, verification, and secure coding practices. All activities were documented and submitted in accordance with internship requirements.
