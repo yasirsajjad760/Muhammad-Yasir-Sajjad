@@ -1,0 +1,45 @@
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const { doubleCsrf } = require("csrf-csrf");
+
+const app = express();
+
+app.use(cookieParser("your_secret_complex_key")); // Use a secret for cookies
+app.use(express.json());
+
+// 1. Configure the CSRF Protection
+const {
+  doubleCsrfProtection, 
+  generateToken,
+} = doubleCsrf({
+  getSecret: () => "your_secret_complex_key", 
+  cookieName: "x-csrf-token",
+  cookieOptions: {
+    httpOnly: true,
+    sameSite: "Lax", // Protects against cross-site requests
+    secure: false,   // Set to true if using HTTPS
+  },
+  getTokenFromRequest: (req) => req.headers["x-csrf-token"], // Look for token in headers
+});
+
+// 2. Route to get a token (The "Handshake")
+app.get("/api/get-csrf-token", (req, res) => {
+  const token = generateToken(req, res);
+  res.json({ csrfToken: token });
+});
+
+// 3. Protected Route (POST/DELETE/PATCH)
+// This middleware will block any request that doesn't have the correct token
+app.post("/api/update-data", doubleCsrfProtection, (req, res) => {
+  res.json({ message: "Success! Data updated securely." });
+});
+
+// Error handling for CSRF failures
+app.use((error, req, res, next) => {
+  if (error.code === "EBADCSRFTOKEN") {
+    return res.status(403).json({ message: "CSRF Attack Detected! Request blocked." });
+  }
+  next();
+});
+
+app.listen(3000, () => console.log("Modern CSRF Protection running on Port 3000"));
